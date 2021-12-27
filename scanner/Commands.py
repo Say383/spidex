@@ -3,28 +3,26 @@ import pathlib
 
 def get_flags():
     parser = argparse.ArgumentParser(
-        description="Scanner for Internet-connected devices")
+        description="Automatic scanner for Internet-connected devices")
     parser.add_argument("-s",
-                        "--start",
                         type=str,
-                        dest="start_ip")
+                        help="Start IPv4 address",
+                        dest="start")
 
     parser.add_argument("-e",
-                        "--end",
                         type=str,
-                        dest="end_ip")
+                        help="End IPv4 address",
+                        dest="end")
 
     parser.add_argument("-t",
-                        "--threads",
                         type=int,
                         dest="threads",
-                        help="Number of threads [Default: 100]",
-                        default=100)
+                        help="Number of threads [Default: 50]",
+                        default=50)
 
-    parser.add_argument("-m",
-                        "--massive-scan",
+    parser.add_argument("--massive",
                         type=pathlib.Path,
-                        help="File path with IP blocks",
+                        help="File path with IPv4 ranges",
                         dest="file")
 
     parser.add_argument("--timeout",
@@ -39,7 +37,7 @@ def get_flags():
         
     parser.add_argument("--top-ports",
                         action="store_true",
-                        help="Scan only 20 most used ports",
+                        help="Scan only 20 most used ports [Default]",
                         dest="top")
 
     parser.add_argument("--all-ports",
@@ -47,5 +45,10 @@ def get_flags():
                         help="Scan 1000 most used ports",
                         dest="all")
 
+    parser.add_argument("--update",
+                        action="store_true",
+                        help="Update database from Wappalyzer",
+                        dest="update")
+
     flags = parser.parse_args()
-    return flags.start_ip, flags.end_ip, flags.threads,flags.file, flags.timeout, flags.screenshot, flags.top, flags.all
+    return flags.start, flags.end, flags.threads,flags.file, flags.timeout, flags.screenshot, flags.top, flags.all, flags.update
