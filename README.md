@@ -37,7 +37,7 @@ Each collection is stored in a database, and finally the deployment of an [API](
 
 - ### IP Geolocation
   IP Geolocation is the identification of the geographic location of a device, such as a mobile phone, gadget, laptop, server and so on, by using an IP address.
-  This search engine consumes an [API](https://freegeoip.app) to get the locations in JSON format.
+  This scanner retrieves geolocation from Maxmind database, updated periodically. 
   ```
   "country" : "Argentina",
   "region_name" : "Buenos Aires",
@@ -49,10 +49,7 @@ Each collection is stored in a database, and finally the deployment of an [API](
   "longitude" : -57.9489,
   ```
 - ### Screenshot
-  If it detects that a device has an HTTP service running, it sends a request to a [server](https://github.com/GoogleChrome/rendertron) and take screenshot.
-
-### Modules Explained 
-<img src="images/iot.svg" width="800" />
+  Possibility to take screenshots from hosts with HTTP using [Rendertron](https://github.com/GoogleChrome/rendertron) and unnauthenticated VNC servers, using [VNC Snapshot](https://github.com/IDNT/vncsnapshot)
 
 ### CLI Usage
 ```
