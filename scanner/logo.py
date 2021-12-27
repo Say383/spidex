@@ -1,6 +1,5 @@
 from colorama import Fore
-def show():
-    return Fore.GREEN +'''
+banner = Fore.GREEN +'''
 
               ,---------------------------,
               |  /---------------------\  |

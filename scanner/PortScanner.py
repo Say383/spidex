@@ -35,7 +35,7 @@ class Port_Scanner():
                 target.close()
 
     def get_banner(self,target,service):
-        if service == "http" or service == "http-alt": target.send(b'GET HTTP/1.1 \r\n')
+        if "http" in service: target.send(b'GET HTTP/1.1 \r\n')
         return target.recv(1024).decode("utf-8", errors='ignore')
 
     def contain_results(self):
