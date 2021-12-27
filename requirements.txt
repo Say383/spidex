@@ -1,6 +1,9 @@
 argparse
 ipaddress
 colorama
-pymongo
 requests
-
+loguru
+elasticsearch
+geoip2
+pycountry
+webtech
