@@ -1,32 +1,21 @@
-# Night Crawler :spider:
-Project focused on designing an Internet of Things (IoT) search engine.
+<h1 align="center">pwndora</h1>
+<p align="center">
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+<img src="https://img.shields.io/badge/-ElasticSearch-005571?style=for-the-badge&logo=elasticsearch">
+<img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white">
+</p>
 
-![img](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
-![img](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![ElasticSearch](https://img.shields.io/badge/-ElasticSearch-005571?style=for-the-badge&logo=elasticsearch)
-![img](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+## Introduction
+Pwndora is a massive and fast IPv4 address range scanner, integrated with multi-threading.
 
-
-## How does it work ?
-
-Night Crawler uses a [command line interface](https://github.com/alechilczenko/Night-Crawler/tree/main/python_modules) to scan IPv4 address ranges with multi-threading.
-
-Using sockets, it determines which ports are open and captures more information about the target, see the features section for details.
-
-Each collection is stored in a database, and finally the deployment of an [API](https://github.com/alechilczenko/Night-Crawler/tree/main/flask) allows users to access the devices.
-
-<a href="https://asciinema.org/a/4s6bDDZDVYlKf1Xdnb3o0y3Up" target="_blank"><img src="https://asciinema.org/a/4s6bDDZDVYlKf1Xdnb3o0y3Up.svg" width="500"/></a>
-
+Using sockets, it analyzes which ports are open, and collects more information about the devices, Each result is stored in Elasticsearch. 
 ## Features
 
 - ### Port Scanning
   Is a method of determining which ports on a network are open and could be receiving or sending data. It is also a process for sending packets to specific ports on a host and     analyzing responses to identify vulnerabilities.
   
 - ### Banner Grabbing
-  Whenever performing the intel-reconnaissance process during penetration testing or security auditing, we need to pay attention to the current web-server’s exposed               information.
-
-  That’s where banner grabbing comes in. Banner grabbing is the act of getting software banner information (name and version), whether it’s done manually, or by using any OSINT   tools that can do it for you automatically.
+  Banner grabbing is the act of getting software banner information (name and version), whether it’s done manually, or by using any OSINT   tools that can do it for you           automatically.
 
   FTP servers, web servers, SSH servers and other system daemons often expose critical information about not only the software name, but also about the exact versions and         operating systems they’re running.
   
