@@ -9,77 +9,53 @@
 Pwndora is a massive and fast IPv4 address range scanner, integrated with multi-threading.
 
 Using sockets, it analyzes which ports are open, and collects more information about targets, each result is stored in Elasticsearch. You can integrate with Kibana to be able to visualize and manipulate data, basically it's like having your own IoT search engine at home.
+
 ## Features
 
-- ### Port Scanning
-  Is a method of determining which ports on a network are open and could be receiving or sending data. It is also a process for sending packets to specific ports on a host and     analyzing responses to identify vulnerabilities.
-  
-- ### Banner Grabbing
-  Banner grabbing is the act of getting software banner information (name and version), whether it’s done manually, or by using any OSINT   tools that can do it for you           automatically.
-  
-  For example, following is a FTP banner:
-  ```
-  "220 CONICET La Plata FTP Server ready."
-  ```
+- Port scanning with different options and retrieve software banner information.
+- Detect some web technologies running on servers, using Webtech integration.   
+- Retrieves IP geolocation from Maxmind free database, updated periodically. 
+- Possibility to take screenshots from hosts with HTTP using [Rendertron](https://github.com/GoogleChrome/rendertron).
+- Anonymous login detection on FTP servers
 
-- ### IP Geolocation
-  IP Geolocation is the identification of the geographic location of a device, such as a mobile phone, gadget, laptop, server and so on, by using an IP address.
-  This scanner retrieves geolocation from Maxmind free database, updated periodically. 
-  ```
-  "country" : "Argentina",
-  "region_name" : "Buenos Aires",
-  "city" : "La Plata",
-  "country_code" : "AR",
-  "zip_code" : "1900",
-  "time_zone" : "America/Argentina/Buenos_Aires",
-  "latitude" : -34.9314,
-  "longitude" : -57.9489,
-  ```
-- ### Screenshot
-  Possibility to take screenshots from hosts with HTTP using [Rendertron](https://github.com/GoogleChrome/rendertron).
-- ### Default credentials detection
-  Detect anonymous login on FTP servers
-  
-
-### Usage
+## Usage
 ```
-usage: CLI.py [-h] [-s START_IP] [-e END_IP] [-t THREADS] [-m FILE] [--timeout TIMEOUT] [--screenshot] [--top-ports] [--all-ports]
-
-Scanner for Internet-connected devices
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -s START_IP, --start START_IP
-  -e END_IP, --end END_IP
-  -t THREADS, --threads THREADS
-                        Number of threads [Default: 100]
-  -m FILE, --massive-scan FILE
-                        File path with IP blocks
-  --timeout TIMEOUT     Socket timeout [Default: 0.5]
-  --screenshot          Take screenshots from hosts with HTTP
-  --top-ports           Scan only 20 most used ports
-  --all-ports           Scan 1000 most used ports
+usage: CLI.py [-h] [-s START] [-e END] [-t THREADS] [--massive FILE] [--timeout TIMEOUT]
+              [--screenshot] [--top-ports] [--all-ports] [--update]
+options:
+  -h, --help         show this help message and exit
+  -s START           Start IPv4 address
+  -e END             End IPv4 address
+  -t THREADS         Number of threads [Default: 50]
+  --massive FILE     File path with IPv4 ranges
+  --timeout TIMEOUT  Socket timeout [Default: 0.5]
+  --screenshot       Take screenshots from hosts with HTTP
+  --top-ports        Scan only 20 most used ports [Default]
+  --all-ports        Scan 1000 most used ports
+  --update           Update database from Wappalyzer
 ```
 ### Examples
+> If this is your first time running, you should use the --update argument.
+
 Scan only a single IPv4 address range:
 ```shell
-python3 CLI.py --start 192.168.0.0 --end 192.168.0.255 -t 500 --top-ports
+python3 CLI.py -s 192.168.0.0 -e 192.168.0.255 -t 150 --top-ports
 ```
 Scan from a text file with multiple IPv4 address ranges:
 ```shell
 python3 CLI.py --massive-scan Argentina.csv -t 200 --all-ports --screenshot 
 ```
+> If you use an excessive amount of threads, some ISPs may detect suspicious traffic and disconnect you from the network. 
+
 ## To-do list
 
 - [x] [Command-line interface](https://github.com/alechilczenko/Night-Crawler/blob/main/scanner/CLI.py)
-- [x] [Backend API with Flask](https://github.com/alechilczenko/Night-Crawler/tree/main/flask)
 - [x] Execution time in terminal
 - [x] Logging module implementation, for exception handling
 - [x] Massive and automatic scanning
 - [x] [Default FTP login detection](https://github.com/alechilczenko/Night-Crawler/blob/main/scanner/login.py)
 - [x] [Automatic download of IP ranges by country](https://github.com/alechilczenko/Night-Crawler/blob/main/ranges/ranges.py)
 - [x] Web technologies detection
-- [x] [Screenshot of unnauthenticated VNC servers](https://github.com/alechilczenko/Night-Crawler/blob/main/scanner/vnc.py) 
 - [ ] Web application vulnerability scan
 - [ ] Find domains associated with IP
 - [ ] Build image with Docker
@@ -96,9 +72,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## Contact
-
 alechilczenko@gmail.com
 
 ## License
-
 [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
