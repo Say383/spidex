@@ -8,7 +8,7 @@
 ## Introduction
 Pwndora is a massive and fast IPv4 address range scanner, integrated with multi-threading.
 
-Using sockets, it analyzes which ports are open, and collects more information about the devices, Each result is stored in Elasticsearch. 
+Using sockets, it analyzes which ports are open, and collects more information about targets, each result is stored in Elasticsearch. You can integrate with Kibana to be able to visualize and manipulate data, basically it's like having your own IoT search engine at home.
 ## Features
 
 - ### Port Scanning
@@ -16,8 +16,6 @@ Using sockets, it analyzes which ports are open, and collects more information a
   
 - ### Banner Grabbing
   Banner grabbing is the act of getting software banner information (name and version), whether it’s done manually, or by using any OSINT   tools that can do it for you           automatically.
-
-  FTP servers, web servers, SSH servers and other system daemons often expose critical information about not only the software name, but also about the exact versions and         operating systems they’re running.
   
   For example, following is a FTP banner:
   ```
@@ -26,7 +24,7 @@ Using sockets, it analyzes which ports are open, and collects more information a
 
 - ### IP Geolocation
   IP Geolocation is the identification of the geographic location of a device, such as a mobile phone, gadget, laptop, server and so on, by using an IP address.
-  This scanner retrieves geolocation from Maxmind database, updated periodically. 
+  This scanner retrieves geolocation from Maxmind free database, updated periodically. 
   ```
   "country" : "Argentina",
   "region_name" : "Buenos Aires",
@@ -38,9 +36,12 @@ Using sockets, it analyzes which ports are open, and collects more information a
   "longitude" : -57.9489,
   ```
 - ### Screenshot
-  Possibility to take screenshots from hosts with HTTP using [Rendertron](https://github.com/GoogleChrome/rendertron) and unnauthenticated VNC servers, using [VNC Snapshot](https://github.com/IDNT/vncsnapshot)
+  Possibility to take screenshots from hosts with HTTP using [Rendertron](https://github.com/GoogleChrome/rendertron).
+- ### Default credentials detection
+  Detect anonymous login on FTP servers
+  
 
-### CLI Usage
+### Usage
 ```
 usage: CLI.py [-h] [-s START_IP] [-e END_IP] [-t THREADS] [-m FILE] [--timeout TIMEOUT] [--screenshot] [--top-ports] [--all-ports]
 
@@ -77,16 +78,13 @@ python3 CLI.py --massive-scan Argentina.csv -t 200 --all-ports --screenshot
 - [x] Massive and automatic scanning
 - [x] [Default FTP login detection](https://github.com/alechilczenko/Night-Crawler/blob/main/scanner/login.py)
 - [x] [Automatic download of IP ranges by country](https://github.com/alechilczenko/Night-Crawler/blob/main/ranges/ranges.py)
+- [x] Web technologies detection
 - [x] [Screenshot of unnauthenticated VNC servers](https://github.com/alechilczenko/Night-Crawler/blob/main/scanner/vnc.py) 
-- [ ] Frontend with React
 - [ ] Web application vulnerability scan
-- [ ] Search filter by tags
-- [ ] Web technologies detection
-- [ ] Find domain name associated with IP
-- [ ] Build image with Docker and deployment
+- [ ] Find domains associated with IP
+- [ ] Build image with Docker
 - [ ] Honeypot detection
 - [ ] RDP Screenshot
-
 
 ## Requirements
  ```
