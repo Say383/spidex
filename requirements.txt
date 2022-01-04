@@ -7,3 +7,4 @@ elasticsearch
 geoip2
 pycountry
 webtech
+pyfiglet
