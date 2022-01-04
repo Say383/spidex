@@ -1,8 +1,9 @@
 #!/usr/bin/env python
-from logo import banner
-from Commands import get_flags
 from loguru import logger
 from datetime import datetime
+
+from logo import title
+from Commands import get_flags
 from Ports import TOP_PORTS, COMMON_PORTS
 from MainScanner import Scanner
 
@@ -39,8 +40,7 @@ def set_port_scan(Discover,top_ports,all_ports):
         Discover.set_ports(TOP_PORTS)
 
 def main():
-    print(banner)
-    print("Developed By: Ale Chilczenko [https://github.com/alechilczenko] \n")
+    print(title)
     start, end, threads, path, timeout, screenshot, top_ports, all_ports, update = get_flags()
     #Verify argument validity
     if  start and end:

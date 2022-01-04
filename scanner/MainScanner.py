@@ -3,13 +3,12 @@ from logging import exception
 from ipaddress import ip_address
 from loguru import logger
 from datetime import datetime
+from queue import Queue
 
-import queue
 import sys
 import threading
 
 from Connect import elastic
-from login import anonymous_login
 from Screenshot import take_screenshot
 from Elastic import create_document
 from PortScanner import Port_Scanner
@@ -42,9 +41,10 @@ class Scanner():
                 
                 if Scanner.contain_results():
                     ports, banners, hostname = Scanner.get_results()
-                    default = anonymous_login(ip,ports)
                     if self.screenshot: self.image = take_screenshot(ip,ports)
-                    create_document(ip,ports,banners,hostname,self.image,default,self.connection)
+
+                    create_document(ip,ports,banners,hostname,self.image,self.connection)
+
                     results.put(ip)
                 q.task_done()
         finally:
@@ -54,12 +54,12 @@ class Scanner():
         #Implemeting Queue, safe threading
         logger.info("Searching connected devices, please wait")
         start = datetime.now()
-        q = queue.Queue()
+        q = Queue()
         #Semaphore object limit max number of threads in paralell
         global pool_sema
-        pool_sema = threading.Semaphore(value=900)
+        pool_sema = threading.Semaphore(value=500)
         #Count total of results with Queue
-        results = queue.Queue()
+        results = Queue()
         try:
             logger.info("Launching threads")
             for j in self.targets:
@@ -69,12 +69,13 @@ class Scanner():
             for i in range(self.threads):
                 thread = threading.Thread(target=self.job, args=(q,results),daemon=True)
                 thread.start()
-                
+
             q.join()
             end = datetime.now()
             elapsed = end-start
             logger.info("Execution time: {}".format(elapsed))
             logger.info("Total discovered devices: {}".format(results.qsize()))
+
         except KeyboardInterrupt:
             logger.info("You pressed CTRL+C")
             sys.exit(1)

@@ -1,7 +1,7 @@
 import socket
 from loguru import logger
 
-logger.add("logs/{time}.log", enqueue=True, level="DEBUG", backtrace=True, diagnose="True")
+#logger.add(enqueue=True, level="DEBUG", backtrace=True, diagnose="True")
 
 #Basic exception handling
 class Port_Scanner():
@@ -25,12 +25,9 @@ class Port_Scanner():
                     self.hostname = socket.gethostbyaddr(self.ip)[0]
                     self.ports.update({service : port})
 
-            except socket.timeout:
-                logger.debug("{} | Socket timed out".format(self.ip))
-            except ConnectionResetError:
-                logger.debug("{} | Connection reseted by host".format(self.ip))
-            except OSError:
-                logger.error("Disconnected from the network")
+            except socket.timeout: logger.debug("{} | Socket timed out".format(self.ip))
+            except ConnectionResetError: logger.debug("{} | Connection reseted by host".format(self.ip))
+            except OSError: logger.error("Disconnected from the network")
             finally:
                 target.close()
 
@@ -39,8 +36,7 @@ class Port_Scanner():
         return target.recv(1024).decode("utf-8", errors='ignore')
 
     def contain_results(self):
-        if len(self.ports.keys()) != 0: 
-            return True
+        if len(self.ports.keys()) != 0: return True
     
     def get_results(self):
         return self.ports, self.banners, self.hostname

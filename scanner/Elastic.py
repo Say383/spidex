@@ -1,10 +1,13 @@
 from datetime import datetime
 from loguru import logger
+
+from login import anonymous_login
 from var import CITY, ASN
 from tags import tags
+
 import geoip2.database
 
-def create_document(ip, ports_dict, banners, hostname, image,default,connection):
+def create_document(ip, ports_dict, banners, hostname, image, connection):
     try:
         keys = list(ports_dict.keys())
         values = list(ports_dict.values())
@@ -28,7 +31,7 @@ def create_document(ip, ports_dict, banners, hostname, image,default,connection)
                 "latitude": response.location.latitude,
                 "longitude": response.location.longitude,
                 "screenshot": image,
-                "anonymous_login": default,
+                "anonymous_login": anonymous_login(ip,ports_dict),
                 "tags": tags(ip,ports_dict),
                 "date": datetime.now().strftime("%d/%m/%Y %H:%M")
             }
