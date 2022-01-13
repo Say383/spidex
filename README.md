@@ -26,8 +26,8 @@ Using sockets, it analyzes which ports are open, and collects more information a
   ```
   pip install -r requirements.txt
   ```
-- Set password for Elasticsearch and Kibana containers in [docker-compose.yml](https://github.com/alechilczenko/pwndora/blob/main/scanner/Connect.py)
-- Configure connection to database in [connect.py](V)
+- Set password for Elasticsearch and Kibana containers in [docker-compose.yml](https://github.com/alechilczenko/pwndora/blob/main/docker-compose.yml)
+- Configure connection to database in [connect.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/Connect.py)
 - Set paths of Maxmind ASN and city databases in [var.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/var.py)
 - Launch containers in background with Docker Compose
   ```shell
