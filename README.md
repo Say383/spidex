@@ -18,6 +18,8 @@ Using sockets, it analyzes which ports are open, and collects more information a
 - Possibility to take screenshots from hosts with HTTP using [Rendertron](https://github.com/GoogleChrome/rendertron).
 - Anonymous login detection on FTP servers
 
+## Visual
+<a href="https://asciinema.org/a/n1RmVV8Rq800jQlCih8ROWeaY" target="_blank"><img src="https://asciinema.org/a/n1RmVV8Rq800jQlCih8ROWeaY.svg" width=700px /></a>
 ## Usage
 ```
 usage: CLI.py [-h] [-s START] [-e END] [-t THREADS] [--massive FILE] [--timeout TIMEOUT]
