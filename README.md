@@ -20,6 +20,22 @@ Using sockets, it analyzes which ports are open, and collects more information a
 
 ## Visual
 <a href="https://asciinema.org/a/n1RmVV8Rq800jQlCih8ROWeaY" target="_blank"><img src="https://asciinema.org/a/n1RmVV8Rq800jQlCih8ROWeaY.svg" width=700px /></a>
+
+## Getting Started
+- Install requirements
+  ```
+  pip install -r requirements.txt
+  ```
+- Set password for Elasticsearch and Kibana containers in [docker-compose.yml](https://github.com/alechilczenko/pwndora/blob/main/scanner/Connect.py)
+- Configure connection to database in [connect.py](V)
+- Set paths of Maxmind ASN and city databases in [var.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/var.py)
+- Launch containers in background with Docker Compose
+  ```shell
+  docker-compose up -d
+  ```
+
+
+ 
 ## Usage
 ```
 usage: CLI.py [-h] [-s START] [-e END] [-t THREADS] [--massive FILE] [--timeout TIMEOUT]
@@ -49,25 +65,6 @@ python3 CLI.py --massive-scan Argentina.csv -t 200 --all-ports --screenshot
 ```
 > If you use an excessive amount of threads, some ISPs may detect suspicious traffic and disconnect you from the network. 
 
-## To-do list
-
-- [x] [Command-line interface](https://github.com/alechilczenko/Night-Crawler/blob/main/scanner/CLI.py)
-- [x] Execution time in terminal
-- [x] Logging module implementation, for exception handling
-- [x] Massive and automatic scanning
-- [x] [Default FTP login detection](https://github.com/alechilczenko/Night-Crawler/blob/main/scanner/login.py)
-- [x] [Automatic download of IP ranges by country](https://github.com/alechilczenko/Night-Crawler/blob/main/ranges/ranges.py)
-- [x] Web technologies detection
-- [ ] Web application vulnerability scan
-- [ ] Find domains associated with IP
-- [ ] Build image with Docker
-- [ ] Honeypot detection
-- [ ] RDP Screenshot
-
-## Requirements
- ```
- pip install -r requirements.txt
- ```
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
