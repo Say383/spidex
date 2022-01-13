@@ -9,7 +9,7 @@ def get_tags(ip,ports):
                 wt = webtech.WebTech(options={'json': False})
                 tags = wt.start_from_url("{}://{}:{}".format(key,ip,value), timeout=1)
                 return tags
-    except webtech.utils.ConnectionException():
+    except webtech.utils.ConnectionException:
         return None
 
 #Filter report from webtech and only return web technologies
