@@ -13,10 +13,11 @@ Using sockets, it analyzes which ports are open, and collects more information a
 ## Features
 
 - Port scanning with different options and retrieve software banner information.
-- Detect some web technologies running on servers, using Webtech integration.   
+- Detect some web technologies running on servers, using [Webtech](https://github.com/ShielderSec/webtech) integration.   
 - Retrieves IP geolocation from Maxmind free database, updated periodically. 
 - Possibility to take screenshots from hosts with HTTP using [Rendertron](https://github.com/GoogleChrome/rendertron).
-- Anonymous login detection on FTP servers
+- Anonymous login detection on FTP servers.
+- Send notifications with results using Slack API.
 
 ## Visual
 <a href="https://asciinema.org/a/n1RmVV8Rq800jQlCih8ROWeaY" target="_blank"><img src="https://asciinema.org/a/n1RmVV8Rq800jQlCih8ROWeaY.svg" width=700px /></a>
@@ -27,15 +28,13 @@ Using sockets, it analyzes which ports are open, and collects more information a
   pip install -r requirements.txt
   ```
 - Set password for Elasticsearch and Kibana containers in [docker-compose.yml](https://github.com/alechilczenko/pwndora/blob/main/scanner/Connect.py)
-- Configure connection to database in [connect.py](V)
-- Set paths of Maxmind ASN and city databases in [var.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/var.py)
+- Configure connection to database in [connect.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/Connect.py)
+- Set paths of Maxmind ASN and city databases in [config.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/config.py)
 - Launch containers in background with Docker Compose
   ```shell
   docker-compose up -d
   ```
 
-
- 
 ## Usage
 ```
 usage: CLI.py [-h] [-s START] [-e END] [-t THREADS] [--massive FILE] [--timeout TIMEOUT]
@@ -51,6 +50,7 @@ options:
   --top-ports        Scan only 20 most used ports [Default]
   --all-ports        Scan 1000 most used ports
   --update           Update database from Wappalyzer
+  --slack            Send notifications by Slack
 ```
 ### Examples
 > If this is your first time running, you should use the --update argument.
