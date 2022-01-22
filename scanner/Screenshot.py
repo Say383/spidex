@@ -1,10 +1,11 @@
 from requests import get
+from config import RENDER_URL
 
 def take_screenshot(ip,ports):
     if "http" in ports:
         image = "{}:{}".format(ip, ports["http"])
         path = "../screenshots/{}.png".format(image)
-        response = get("https://render-tron.appspot.com/screenshot/" + "http://{}".format(image), stream=True)
+        response = get(RENDER_URL + "http://{}".format(image), stream=True)
 
         if (response.status_code == 200):
             with open(path, 'wb') as file:
