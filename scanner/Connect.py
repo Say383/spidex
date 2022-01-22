@@ -1,3 +1,3 @@
 from elasticsearch import Elasticsearch
 
-elastic = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+elastic = Elasticsearch(["localhost"],http_auth=("elastic","magicword"),port=9200)
