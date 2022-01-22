@@ -21,13 +21,13 @@ def get_country_ip_blocks(file):
         total.append(block)
     return total
 
-def massive_scan(path,threads,timeout,screenshot,top_ports,all_ports):
+def massive_scan(path,threads,timeout,screenshot,top_ports,all_ports,slack):
     #Scan total of ip blocks in file
     countries = get_country_ip_blocks(path)
     for ip in countries:
         start = ip[0]
         end = ip[1]
-        Discover = Scanner(start, end, threads,timeout,screenshot)
+        Discover = Scanner(start, end, threads,timeout,screenshot,slack)
         set_port_scan(Discover,top_ports,all_ports)
         Discover.start_threads()
 
@@ -41,16 +41,16 @@ def set_port_scan(Discover,top_ports,all_ports):
 
 def main():
     print(title)
-    start, end, threads, path, timeout, screenshot, top_ports, all_ports, update = get_flags()
+    start, end, threads, path, timeout, screenshot, top_ports, all_ports, update, slack = get_flags()
     #Verify argument validity
     if  start and end:
-        Discover = Scanner(start,end,threads,timeout,screenshot)
+        Discover = Scanner(start,end,threads,timeout,screenshot,slack)
         set_port_scan(Discover,top_ports,all_ports)
         Discover.start_threads()
 
     elif path:
         start = datetime.now()
-        massive_scan(path,threads,timeout,screenshot,top_ports,all_ports)
+        massive_scan(path,threads,timeout,screenshot,top_ports,all_ports,slack)
         end = datetime.now()
         elapsed = end-start
         logger.info("Total execution time: {}".format(elapsed))

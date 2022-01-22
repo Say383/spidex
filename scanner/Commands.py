@@ -50,5 +50,9 @@ def get_flags():
                         help="Update database from Wappalyzer",
                         dest="update")
 
+    parser.add_argument("--slack",
+                        action="store_true",
+                        help="Send notifications by Slack",
+                        dest="slack")
     flags = parser.parse_args()
-    return flags.start, flags.end, flags.threads,flags.file, flags.timeout, flags.screenshot, flags.top, flags.all, flags.update
+    return flags.start, flags.end, flags.threads,flags.file, flags.timeout, flags.screenshot, flags.top, flags.all, flags.update, flags.slack

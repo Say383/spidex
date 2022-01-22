@@ -12,18 +12,21 @@ from Connect import elastic
 from Screenshot import take_screenshot
 from Elastic import create_document
 from PortScanner import Port_Scanner
+from slack import send_message
 
 class Scanner():
-    def __init__(self,start,end,threads,timeout,screenshot):
+    def __init__(self,start,end,threads,timeout,screenshot,slack):
         self.timeout = timeout
         self.screenshot = screenshot
         self.targets = self.get_ranges(start,end)
         self.threads = threads
         self.connection = elastic
         self.image = None
+        self.slack = slack
 
     def set_ports(self,ports):
         self.ports = ports
+    
 
     def get_ranges(self,start,end):
         #Get total of ip addresses
@@ -75,6 +78,8 @@ class Scanner():
             elapsed = end-start
             logger.info("Execution time: {}".format(elapsed))
             logger.info("Total discovered devices: {}".format(results.qsize()))
+
+            if self.slack: send_message(elapsed,results.qsize())
 
         except KeyboardInterrupt:
             logger.info("You pressed CTRL+C")
