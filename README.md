@@ -23,17 +23,16 @@ Using sockets, it analyzes which ports are open, and collects more information a
 <a href="https://asciinema.org/a/n1RmVV8Rq800jQlCih8ROWeaY" target="_blank"><img src="https://asciinema.org/a/n1RmVV8Rq800jQlCih8ROWeaY.svg" width=700px /></a>
 
 ## Getting Started
-- Install requirements
-  ```
-  pip install -r requirements.txt
-  ```
+  > Make sure you have $HOME/.local/share directory, to avoiding issues with Webtech.
+  
+  > To use slack argument, you should configure [Incoming Webhooks](https://api.slack.com/messaging/webhooks) URL in config.py
+- Clone this repository
+- Install requirements with Python PIP
 - Set password for Elasticsearch and Kibana containers in [docker-compose.yml](https://github.com/alechilczenko/pwndora/blob/main/scanner/Connect.py)
-- Configure connection to database in [connect.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/Connect.py)
-- Set paths of Maxmind ASN and city databases in [config.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/config.py)
-- Launch containers in background with Docker Compose
-  ```shell
-  docker-compose up -d
-  ```
+- Configure connection to Elasticsearch in [connect.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/Connect.py)
+- Set paths of Maxmind ASN, city databases and Rendertron URL in [config.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/config.py)
+- Launch containers in background with Docker Compose.
+- Finally start scanner
 
 ## Usage
 ```
@@ -52,7 +51,7 @@ options:
   --update           Update database from Wappalyzer
   --slack            Send notifications by Slack
 ```
-### Examples
+## Examples
 > If this is your first time running, you should use the --update argument.
 
 Scan only a single IPv4 address range:
@@ -61,14 +60,14 @@ python3 CLI.py -s 192.168.0.0 -e 192.168.0.255 -t 150 --top-ports
 ```
 Scan from a text file with multiple IPv4 address ranges:
 ```shell
-python3 CLI.py --massive-scan Argentina.csv -t 200 --all-ports --screenshot 
+python3 CLI.py --massive Argentina.csv -t 200 --all-ports --screenshot 
 ```
-> If you use an excessive amount of threads, some ISPs may detect suspicious traffic and disconnect you from the network. 
+> If you use an excessive amount of threads, some ISPs may detect suspicious traffic and disconnect you from the network.
+## Kibana example
+<img src="images/kibana1.png">
 
 ## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-Please make sure to update tests as appropriate.
+If you have ideas or future features, feel free to participate to continue making this project great. 
 
 ## Contact
 alechilczenko@gmail.com
