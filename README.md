@@ -1,8 +1,15 @@
-<h1 align="center">pwndora</h1>
 <p align="center">
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
-<img src="https://img.shields.io/badge/-ElasticSearch-005571?style=for-the-badge&logo=elasticsearch">
-<img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white">
+<img src="images/final1.png" width=200px>
+</p>
+<p align="center">
+
+<img src="https://github.com/aleen42/badges/blob/master/src/elasticsearch.svg">
+<img src="https://github.com/aleen42/badges/blob/master/src/kibana.svg">
+<img src="https://github.com/aleen42/badges/blob/master/src/python.svg">
+<img src="https://github.com/aleen42/badges/blob/master/src/docker.svg">
+<img src="https://img.shields.io/badge/Version-2.0-brightgreen">
+<img src="https://img.shields.io/badge/Maintained%3F-yes-blue.svg">
+
 </p>
 
 ## Introduction
@@ -63,7 +70,7 @@ Scan from a text file with multiple IPv4 address ranges:
 python3 CLI.py --massive Argentina.csv -t 200 --all-ports --screenshot 
 ```
 > If you use an excessive amount of threads, some ISPs may detect suspicious traffic and disconnect you from the network.
-## Kibana example
+## Kibana Example
 <img src="images/kibana1.png">
 
 ## Contributing
