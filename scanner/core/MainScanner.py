@@ -1,86 +1,75 @@
 #Local modules
-from logging import exception
-from ipaddress import ip_address
 from loguru import logger
-from datetime import datetime
 from queue import Queue
 
 import sys
 import threading
 
-from Connect import elastic
-from Screenshot import take_screenshot
-from Elastic import create_document
-from PortScanner import Port_Scanner
-from slack import send_message
+from core.PortScanner import Port_Scanner
+from modules.test_time import execution_time
+from modules.document import create_document
+from modules.ranges import get_ranges
 
 class Scanner():
-    def __init__(self,start,end,threads,timeout,screenshot,slack):
-        self.timeout = timeout
-        self.screenshot = screenshot
-        self.targets = self.get_ranges(start,end)
-        self.threads = threads
-        self.connection = elastic
-        self.image = None
-        self.slack = slack
+    def __init__(self,start,end):
+        self.targets = get_ranges(start,end)
+        self.results = Queue()
 
     def set_ports(self,ports):
         self.ports = ports
-    
 
-    def get_ranges(self,start,end):
-        #Get total of ip addresses
-        start_int = int(ip_address(start).packed.hex(), 16)
-        end_int = int(ip_address(end).packed.hex(), 16)
-        return [ip_address(ip).exploded for ip in range(start_int, end_int)]
-
-    def job(self,q,results):
-        pool_sema.acquire()
+    def job(self,q,timeout):
         try:
+            pool_sema.acquire()
+
             while not q.empty():
                 ip = q.get()
                 Scanner = Port_Scanner(ip)
-                Scanner.start(self.timeout,self.ports)
-                
+                Scanner.start(timeout,self.ports)
+
                 if Scanner.contain_results():
                     ports, banners, hostname = Scanner.get_results()
-                    if self.screenshot: self.image = take_screenshot(ip,ports)
+                    device = create_document(ip,ports,banners,hostname)
+                    
+                    self.results.put(device)
 
-                    create_document(ip,ports,banners,hostname,self.image,self.connection)
-
-                    results.put(ip)
                 q.task_done()
         finally:
             pool_sema.release()
 
-    def start_threads(self):
+    @execution_time
+    def start_threads(self,threads,timeout):
         #Implemeting Queue, safe threading
-        logger.info("Searching connected devices, please wait")
-        start = datetime.now()
+
         q = Queue()
-        #Semaphore object limit max number of threads in paralell
         global pool_sema
-        pool_sema = threading.Semaphore(value=500)
+
+        logger.info("Searching connected devices, please wait")
+        #Semaphore object limit max number of threads in paralell
+        pool_sema = threading.Semaphore(value=400)
         #Count total of results with Queue
-        results = Queue()
         try:
             logger.info("Launching threads")
             for j in self.targets:
                 q.put(j)
             logger.info("Waiting for Queue to complete, {} jobs".format(q.qsize()))
-    
-            for i in range(self.threads):
-                thread = threading.Thread(target=self.job, args=(q,results),daemon=True)
+
+            for i in range(threads):
+                thread = threading.Thread(target=self.job, args=(q,timeout),daemon=True)
                 thread.start()
 
             q.join()
-            end = datetime.now()
-            elapsed = end-start
-            logger.info("Execution time: {}".format(elapsed))
-            logger.info("Total discovered devices: {}".format(results.qsize()))
 
-            if self.slack: send_message(elapsed,results.qsize())
+            logger.info("Total Discovered devices: {}".format(self.results.qsize()))
 
         except KeyboardInterrupt:
             logger.info("You pressed CTRL+C")
             sys.exit(1)
+
+    def slack_message(self):
+        return self.results.qsize()
+
+    def get_devices(self):
+        return list(self.results.queue)
+    
+    

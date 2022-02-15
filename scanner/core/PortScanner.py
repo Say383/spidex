@@ -19,20 +19,25 @@ class Port_Scanner():
             target.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             try:
                 response = target.connect_ex((self.ip, port))
+
                 if  response == 0:
                     service = socket.getservbyport(port)
                     self.banners.append(self.get_banner(target,service))
-                    self.hostname = socket.gethostbyaddr(self.ip)[0]
+                    try:
+                        self.hostname = socket.gethostbyaddr(self.ip)[0]
+                    except socket.herror:
+                        self.hostname = None
+                
                     self.ports.update({service : port})
 
             except socket.timeout: logger.debug("{} | Socket timed out".format(self.ip))
             except ConnectionResetError: logger.debug("{} | Connection reseted by host".format(self.ip))
-            except OSError: logger.error("Disconnected from the network")
+            except: logger.exception("Exception ocurred: ")
             finally:
                 target.close()
 
     def get_banner(self,target,service):
-        if "http" in service: target.send(b'GET HTTP/1.1 \r\n')
+        if "http" in service: target.send(b'HEAD HTTP/1.1 \r\n')
         return target.recv(1024).decode("utf-8", errors='ignore')
 
     def contain_results(self):
