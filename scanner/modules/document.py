@@ -2,12 +2,12 @@ from datetime import datetime
 from loguru import logger
 
 from login import anonymous_login
-from config import CITY, ASN
-from tags import tags, get_os
+from configs.config import CITY, ASN
+from modules.tags import tags, get_os
 
 import geoip2.database
 
-def create_document(ip, ports_dict, banners, hostname, image, connection):
+def create_document(ip, ports_dict, banners, hostname):
     try:
         keys = list(ports_dict.keys())
         values = list(ports_dict.values())
@@ -30,7 +30,6 @@ def create_document(ip, ports_dict, banners, hostname, image, connection):
                 "country_code": response.country.iso_code,
                 "latitude": response.location.latitude,
                 "longitude": response.location.longitude,
-                "screenshot": image,
                 "anonymous_login": anonymous_login(ip,ports_dict),
                 "tags": tags(ip,ports_dict),
                 "os": get_os(banners),
@@ -38,8 +37,8 @@ def create_document(ip, ports_dict, banners, hostname, image, connection):
 
             }
         doc = {k:v for k,v in col.items() if v is not None}
-        connection.index(index="devices", document=doc)
     except:
         logger.exception("Exception ocurred:")
     finally:
         logger.success("{} | {} | {} | {}".format(ip,keys,response.country.name,response.city.name))
+        return doc

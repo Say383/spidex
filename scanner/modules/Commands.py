@@ -31,10 +31,6 @@ def get_flags():
                         dest="timeout",
                         default=0.5)
 
-    parser.add_argument("--screenshot",
-                        action="store_true",
-                        help="Take screenshots from hosts with HTTP")
-        
     parser.add_argument("--top-ports",
                         action="store_true",
                         help="Scan only 20 most used ports [Default]",
@@ -45,14 +41,9 @@ def get_flags():
                         help="Scan 1000 most used ports",
                         dest="all")
 
-    parser.add_argument("--update",
-                        action="store_true",
-                        help="Update database from Wappalyzer",
-                        dest="update")
-
     parser.add_argument("--slack",
                         action="store_true",
                         help="Send notifications by Slack",
                         dest="slack")
     flags = parser.parse_args()
-    return flags.start, flags.end, flags.threads,flags.file, flags.timeout, flags.screenshot, flags.top, flags.all, flags.update, flags.slack
+    return flags.start, flags.end, flags.threads,flags.file, flags.timeout, flags.top, flags.all, flags.slack
