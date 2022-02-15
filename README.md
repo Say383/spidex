@@ -22,7 +22,6 @@ Using sockets, it analyzes which ports are open, and collects more information a
 - Port scanning with different options and retrieve software banner information.
 - Detect some web technologies running on servers, using [Webtech](https://github.com/ShielderSec/webtech) integration.   
 - Retrieves IP geolocation from Maxmind free database, updated periodically. 
-- Possibility to take screenshots from hosts with HTTP using [Rendertron](https://github.com/GoogleChrome/rendertron).
 - Anonymous login detection on FTP servers.
 - Send notifications with results using Slack API.
 
