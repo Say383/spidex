@@ -41,7 +41,7 @@ class Port_Scanner():
 
     def get_banner(self,target,port):
 
-        ports = [80,8080,8081,8000,8001]
+        ports = [80,8080,8081,8000,8001,82,8888]
 
         if port in ports:
             byte = "HEAD / HTTP/1.1\r\nHost: http://{}:{}\r\nAccept: text/html\r\n\r\n".format(self.ip,port)
