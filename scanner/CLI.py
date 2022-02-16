@@ -19,15 +19,15 @@ def get_country_ip_blocks(file):
         total.append(block)
     return total
 
-def launch_scanner(start,end,threads,timeout,top_ports,all_ports,slack):
+def launch_scanner(start,end,threads,timeout,top_ports,all_ports,slack,custom):
     Discover = Scanner(start,end)
 
     if top_ports:
         Discover.set_ports(TOP_PORTS)
     elif all_ports:
         Discover.set_ports(COMMON_PORTS)
-    else:
-        Discover.set_ports(TOP_PORTS)
+    elif custom:
+        Discover.set_ports(custom)
 
     Discover.start_threads(threads,timeout)
     results = Discover.slack_message()
@@ -40,17 +40,17 @@ def launch_scanner(start,end,threads,timeout,top_ports,all_ports,slack):
 
 def main():
     print(title)
-    start, end, threads, path, timeout, top_ports, all_ports, slack = get_flags()
+    start, end, threads, path, timeout, top_ports, all_ports, custom, slack = get_flags()
     #Verify argument validity
     if  start and end:
-        launch_scanner(start,end,threads,timeout,top_ports,all_ports,slack)
+        launch_scanner(start,end,threads,timeout,top_ports,all_ports,slack,custom)
 
     elif path:
         countries = get_country_ip_blocks(path)
         for ip in countries:
             start = ip[0]
             end = ip[1]
-            launch_scanner(start,end,threads,timeout,top_ports,all_ports,slack)
+            launch_scanner(start,end,threads,timeout,top_ports,all_ports,slack,custom)
     else:
         logger.info("Please use -h to see all options")
         sys.exit(1)
