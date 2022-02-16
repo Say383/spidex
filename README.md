@@ -42,20 +42,22 @@ Using sockets, it analyzes which ports are open, and collects more information a
 
 ## Usage
 ```
-usage: CLI.py [-h] [-s START] [-e END] [-t THREADS] [--massive FILE] [--timeout TIMEOUT]
-              [--screenshot] [--top-ports] [--all-ports] [--update]
 options:
-  -h, --help         show this help message and exit
-  -s START           Start IPv4 address
-  -e END             End IPv4 address
-  -t THREADS         Number of threads [Default: 50]
-  --massive FILE     File path with IPv4 ranges
-  --timeout TIMEOUT  Socket timeout [Default: 0.5]
-  --screenshot       Take screenshots from hosts with HTTP
-  --top-ports        Scan only 20 most used ports [Default]
-  --all-ports        Scan 1000 most used ports
-  --update           Update database from Wappalyzer
-  --slack            Send notifications by Slack
+  -h, --help            show this help message and exit
+  -s START, --start START
+                        Start IPv4 address
+  -e END, --end END     End IPv4 address
+  -t THREADS, --threads THREADS
+                        Number of threads [Default: 50]
+  -m FILE, --massive-scan FILE
+                        File path with IPv4 ranges
+  -ti TIMEOUT, --timeout TIMEOUT
+                        Socket timeout [Default: 0.5]
+  -p, --top-ports       Scan only 20 most used ports [Default]
+  -a, --all-ports       Scan 1000 most used ports
+  -c CUSTOM [CUSTOM ...], --custom-ports CUSTOM [CUSTOM ...]
+                        Scan custom ports directly from terminal
+  -sl, --slack          Send notifications by Slack with results
 ```
 ## Examples
 > If this is your first time running, you should use the --update argument.
@@ -66,8 +68,9 @@ python3 CLI.py -s 192.168.0.0 -e 192.168.0.255 -t 150 --top-ports
 ```
 Scan from a text file with multiple IPv4 address ranges:
 ```shell
-python3 CLI.py --massive Argentina.csv -t 200 --all-ports --screenshot 
+python3 CLI.py -m Argentina.csv -t 200 -ti 5 --all-ports
 ```
+
 > If you use an excessive amount of threads, some ISPs may detect suspicious traffic and disconnect you from the network.
 ## Kibana Example
 <img src="images/kibana1.png">
