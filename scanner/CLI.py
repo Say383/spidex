@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from loguru import logger
-from modules.test_time import execution_time
 from modules.logo import title
 from modules.Commands import get_flags
 from configs.Ports import TOP_PORTS, COMMON_PORTS
@@ -20,7 +19,6 @@ def get_country_ip_blocks(file):
         total.append(block)
     return total
 
-@execution_time
 def launch_scanner(start,end,threads,timeout,top_ports,all_ports,slack):
     Discover = Scanner(start,end)
 
@@ -37,6 +35,7 @@ def launch_scanner(start,end,threads,timeout,top_ports,all_ports,slack):
 
     devices = Discover.get_devices()
     if devices:
+        logger.info("Inserting results in database...")
         collection.insert_many(devices)
 
 def main():
