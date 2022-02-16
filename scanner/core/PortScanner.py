@@ -9,26 +9,29 @@ class Port_Scanner():
         self.ip = ip
         self.hostname = []
         self.banners = []
-        self.ports = {}
-        
+        self.ports = []
+
     def start(self,timeout,ports):
         for port in ports:
 
             target = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            target.settimeout(timeout)
+
             target.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            target.settimeout(timeout)
+
             try:
                 response = target.connect_ex((self.ip, port))
 
                 if  response == 0:
-                    service = socket.getservbyport(port)
-                    self.banners.append(self.get_banner(target,service))
+                    self.ports.append(port)
+
+                    self.banners.append(self.get_banner(target,port))
                     try:
                         self.hostname = socket.gethostbyaddr(self.ip)[0]
                     except socket.herror:
                         self.hostname = None
-                
-                    self.ports.update({service : port})
+
+
 
             except socket.timeout: logger.debug("{} | Socket timed out".format(self.ip))
             except ConnectionResetError: logger.debug("{} | Connection reseted by host".format(self.ip))
@@ -36,12 +39,19 @@ class Port_Scanner():
             finally:
                 target.close()
 
-    def get_banner(self,target,service):
-        if "http" in service: target.send(b'HEAD HTTP/1.1 \r\n')
+    def get_banner(self,target,port):
+
+        ports = [80,8080,8081,8000,8001]
+
+        if port in ports:
+            byte = "HEAD / HTTP/1.1\r\nHost: http://{}:{}\r\nAccept: text/html\r\n\r\n".format(self.ip,port)
+            data = str.encode(byte)
+            target.sendall(data)
+
         return target.recv(1024).decode("utf-8", errors='ignore')
 
     def contain_results(self):
-        if len(self.ports.keys()) != 0: return True
-    
+        if self.ports: return True
+
     def get_results(self):
         return self.ports, self.banners, self.hostname
