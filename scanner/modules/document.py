@@ -1,17 +1,14 @@
 from datetime import datetime
 from loguru import logger
 
-from login import anonymous_login
+from modules.login import anonymous_login
 from configs.config import CITY, ASN
 from modules.tags import tags, get_os
 
 import geoip2.database
 
-def create_document(ip, ports_dict, banners, hostname):
+def create_document(ip, ports, banners, hostname):
     try:
-        keys = list(ports_dict.keys())
-        values = list(ports_dict.values())
-
         with geoip2.database.Reader(CITY) as geo_reader:
             response = geo_reader.city(ip)
         with geoip2.database.Reader(ASN) as asn_reader:        
@@ -22,16 +19,15 @@ def create_document(ip, ports_dict, banners, hostname):
                 "org": resp.autonomous_system_organization,
                 "asn": resp.autonomous_system_number,
                 "banners": banners,
-                "services": keys,
-                "ports": values,
+                "ports": ports,
                 "hostname": hostname,
                 "country": response.country.name,
                 "city": response.city.name,
                 "country_code": response.country.iso_code,
                 "latitude": response.location.latitude,
                 "longitude": response.location.longitude,
-                "anonymous_login": anonymous_login(ip,ports_dict),
-                "tags": tags(ip,ports_dict),
+                "anonymous_login": anonymous_login(ip,ports),
+                "tags": tags(ip,ports),
                 "os": get_os(banners),
                 "date": datetime.now().strftime("%d/%m/%Y %H:%M")
 
@@ -40,5 +36,5 @@ def create_document(ip, ports_dict, banners, hostname):
     except:
         logger.exception("Exception ocurred:")
     finally:
-        logger.success("{} | {} | {} | {}".format(ip,keys,response.country.name,response.city.name))
+        logger.success("{} | {} | {} | {}".format(ip,ports,response.country.name,response.city.name))
         return doc
