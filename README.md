@@ -7,7 +7,7 @@
 <img src="https://github.com/aleen42/badges/blob/master/src/kibana.svg">
 <img src="https://github.com/aleen42/badges/blob/master/src/python.svg">
 <img src="https://github.com/aleen42/badges/blob/master/src/docker.svg">
-<img src="https://img.shields.io/badge/Version-2.0-brightgreen">
+<img src="https://img.shields.io/badge/Version-3.0-brightgreen">
 <img src="https://img.shields.io/badge/Maintained%3F-yes-blue.svg">
 
 </p>
