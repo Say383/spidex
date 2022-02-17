@@ -44,11 +44,11 @@ class Port_Scanner():
         ports = [80,8080,8081,8000,8001,82,8888]
 
         if port in ports:
-            byte = "HEAD / HTTP/1.1\r\nHost: http://{}:{}\r\nAccept: text/html\r\n\r\n".format(self.ip,port)
+            byte = "GET / HTTP/1.1\r\nHost: {}\r\nAccept: text/html\r\nConnection: close\r\n\r\n".format(self.ip)
             data = str.encode(byte)
             target.sendall(data)
 
-        return target.recv(1024).decode("utf-8", errors='ignore')
+        return target.recv(4096).decode("utf-8", errors='ignore')
 
     def contain_results(self):
         if self.ports: return True
