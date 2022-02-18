@@ -14,6 +14,8 @@ class Scanner():
     def __init__(self,start,end):
         self.targets = get_ranges(start,end)
         self.results = Queue()
+        self.count = 0
+        self.lock = threading.Lock()
 
     def set_ports(self,ports):
         self.ports = ports
@@ -28,12 +30,19 @@ class Scanner():
                 Scanner.start(timeout,self.ports)
 
                 if Scanner.contain_results():
-                    ports, banners, hostname = Scanner.get_results()
-                    device = create_document(ip,ports,banners,hostname)
+                    banners, hostname, ports = Scanner.get_results()
+                    device = create_document(ip,banners,hostname,ports)
                     
                     self.results.put(device)
 
                 q.task_done()
+
+                with self.lock:
+                    
+                    self.count += 1
+                    percent = (self.count*100)/len(self.targets)
+                    output = "[{}% {}/{}]".format(percent,self.count,len(self.targets))
+                    print(output, end="\r")
         finally:
             pool_sema.release()
 
@@ -52,7 +61,7 @@ class Scanner():
             logger.info("Launching threads")
             for j in self.targets:
                 q.put(j)
-            logger.info("Waiting for Queue to complete, {} jobs".format(q.qsize()))
+            logger.info(f"Waiting for Queue to complete, {q.qsize()} jobs")
 
             for i in range(threads):
                 thread = threading.Thread(target=self.job, args=(q,timeout),daemon=True)
@@ -60,7 +69,7 @@ class Scanner():
 
             q.join()
 
-            logger.info("Total Discovered devices: {}".format(self.results.qsize()))
+            logger.info(f"Total discovered devices: {self.results.qsize()}")
 
         except KeyboardInterrupt:
             logger.info("You pressed CTRL+C")
