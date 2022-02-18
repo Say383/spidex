@@ -39,7 +39,7 @@ def get_flags():
     parser.add_argument("-p",
                         "--top-ports",
                         action="store_true",
-                        help="Scan only 20 most used ports [Default]",
+                        help="Scan only 20 most used ports",
                         dest="top")
 
     parser.add_argument("-a",
@@ -60,5 +60,18 @@ def get_flags():
                         action="store_true",
                         help="Send notifications by Slack with results",
                         dest="slack")
+
+    parser.add_argument("-sv",
+                        "--save",
+                        choices=['json','mongodb'],
+                        help="Methods of data storage",
+                        dest="save")
+
+    parser.add_argument("-l",
+                        "--logs",
+                        action="store_true",
+                        help="Add a log file, useful in debugging",
+                        dest="logs")
+
     flags = parser.parse_args()
-    return flags.start, flags.end, flags.threads,flags.file, flags.timeout, flags.top, flags.all, flags.custom, flags.slack
+    return flags.start, flags.end, flags.threads,flags.file, flags.timeout, flags.top, flags.all, flags.custom, flags.slack, flags.save, flags.logs
