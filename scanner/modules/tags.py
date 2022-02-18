@@ -1,31 +1,34 @@
 import webtech
+from bs4 import BeautifulSoup
 
-
-os_list = ["CentOS","Ubuntu","Debian","Microsoft","Windows Server","Red Hat"]
-
-def get_tags(ip,ports):
+def get_tags(ip,port):
     try:
-        if 80 in ports:
-            wt = webtech.WebTech(options={'json': False})
-            tags = wt.start_from_url("http://{}:80".format(ip), timeout=1)
-            return tags
+        wt = webtech.WebTech(options={'json': False})
+        result = wt.start_from_url(f"http://{ip}:{port}", timeout=1)
+        return result
     except webtech.utils.ConnectionException:
         return None
 
 #Filter report from webtech and only return web technologies
-def tags(ip,ports):
-    save = get_tags(ip,ports)
-    if save != None:
-        techs = save.replace("\t-","").splitlines()
-        filt = [x.strip() for x in techs if not "Detected" in x and not "Target" in x]
-        
-        filt2 = [i for i in filt if not i in os_list]
-        return filt2
+def tags(ip,banners,ports):
+    tags_list = []
+
+    for index, value in enumerate(banners):
+        #Checks if the banners received contain HTML to analyze technologies
+
+        if bool(BeautifulSoup(value, "html.parser").find()):
+            #If true, send the port of the list, in the same position as the banners.
+            tags = get_tags(ip,ports[index])
+
+            if tags != None:
+            #Removing unnecessary words and duplicates from the received list
+
+                techs = tags.replace("\t-","").splitlines()
+                filt = [x.strip() for x in techs if not "Detected" in x and not "Target" in x]
+                tags_list.append(filt)
+
+    flat_list = [item for sublist in tags_list for item in sublist]
+    if flat_list:
+        return list(set(flat_list))
     else:
         return None
-
-def get_os(banners):
-    if banners:
-        for b in banners:
-            for os in os_list:
-                if os in b: return os
