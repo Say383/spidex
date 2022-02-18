@@ -26,7 +26,7 @@ Using sockets, it analyzes which ports are open, and collects more information a
 - Send notifications with results using Slack API.
 
 ## Visual
-<a href="https://asciinema.org/a/469844" target="_blank"><img src="https://asciinema.org/a/469844.svg" width=700px /></a>
+<a href="https://asciinema.org/a/469947" target="_blank"><img src="https://asciinema.org/a/469947.svg" width=700px /></a>
 
 ## Getting Started
   > Make sure you have $HOME/.local/share directory, to avoiding issues with Webtech.
