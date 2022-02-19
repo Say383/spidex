@@ -1,4 +1,4 @@
-CITY = "../geoip2/CITY/GeoLite2-City.mmdb"
-ASN = "../geoip2/ASN/GeoLite2-ASN.mmdb"
+CITY = "../scanner/db/GeoLite2-City.mmdb"
+ASN = "../scanner/db/GeoLite2-ASN.mmdb"
 SLACK_URL = ""
 
