@@ -30,8 +30,8 @@ class Scanner():
                 Scanner.start(timeout,self.ports)
 
                 if Scanner.contain_results():
-                    banners, hostname, ports = Scanner.get_results()
-                    device = create_document(ip,banners,hostname,ports)
+                    banners, hostname, ports, tags = Scanner.get_results()
+                    device = create_document(ip,banners,hostname,ports,tags)
                     
                     self.results.put(device)
 
@@ -41,7 +41,7 @@ class Scanner():
                     
                     self.count += 1
                     percent = (self.count*100)/len(self.targets)
-                    output = "[{}% {}/{}]".format(percent,self.count,len(self.targets))
+                    output = "{}% {}/{}".format(percent,self.count,len(self.targets))
                     print(output, end="\r")
         finally:
             pool_sema.release()
