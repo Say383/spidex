@@ -1,5 +1,5 @@
 <p align="center">
-<img src="images/final1.png" width=200px>
+<img src="images/final1.png" width=190px>
 </p>
 <p align="center">
 
@@ -60,14 +60,17 @@ options:
   -l, --logs            Add a log file, useful in debugging
 ```
 ## Examples
-
 Scan only a single IPv4 address range:
-```shell
-python3 CLI.py -s 192.168.0.0 -e 192.168.0.255 -t 150 --top-ports
-```
+ ```bash
+python3 CLI.py -s 192.168.0.0 -e 192.168.0.255 -t 150 --top-ports -sv json
+ ```
 Scan from a text file with multiple IPv4 address ranges:
-```shell
-python3 CLI.py -m Argentina.csv -t 200 -ti 5 --all-ports
+```bash
+python3 CLI.py -m ranges.csv -t 200 -ti 5 --all-ports --save mongodb
+```
+Scan with custom ports and logs options:
+```bash
+python3 CLI.py -m ranges.csv -t 350 --custom-ports 80 21 22 -sv json --logs
 ```
 ## Kibana Example
 <img src="images/kibana1.png">
@@ -75,11 +78,11 @@ python3 CLI.py -m Argentina.csv -t 200 -ti 5 --all-ports
 ## Contributing
 If you have ideas or future features, feel free to participate to continue making this project great. 
 
-## Contact
-alechilczenko@gmail.com
-
 ## Legal Disclaimer
 This project is made for educational and ethical testing purposes only. Usage of this software for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program. 
+
+## Contact
+alechilczenko@gmail.com
 
 ## License
 [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
