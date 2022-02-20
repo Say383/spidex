@@ -29,15 +29,21 @@ This project allows users to create their own IoT search engine at home, in simp
 
 ## Visual
 <a href="https://asciinema.org/a/470234" target="_blank"><img src="https://asciinema.org/a/470234.svg" width=700px/></a>
+
 ## Getting Started
+### Manual Installation
   > Make sure you have $HOME/.local/share directory, to avoiding issues with Webtech.
   
   > To use slack argument, you should configure [Incoming Webhooks](https://api.slack.com/messaging/webhooks) URL in config.py
 - Clone this repository
 - Install requirements with Python PIP
 - Finally start scanner
-
+### Using docker image (Recommended)
+```
+docker pull alechilczenko/pwndora:3.0
+```
 ## Usage
+### CLI
 ```
 options:
   -h, --help            show this help message and exit
@@ -59,7 +65,7 @@ options:
                         Methods of data storage
   -l, --logs            Add a log file, useful in debugging
 ```
-## Examples
+### Examples
 Scan only a single IPv4 address range:
  ```bash
 python3 CLI.py -s 192.168.0.0 -e 192.168.0.255 -t 150 --top-ports -sv json
@@ -72,7 +78,14 @@ Scan with custom ports and logs options:
 ```bash
 python3 CLI.py -m ranges.csv -t 350 --custom-ports 80 21 22 -sv json --logs
 ```
-## Kibana Example
+### Usage with MongDB
+To insert the results into a database, you must set the following environment variables:
+> Tip: You can create an instance of MongoDB and Mongo Express using docker-compose. 
+```
+export MONGODB_URI="mongodb://localhost:27017"
+export MONGODB_USER="user"
+export MONGODB_PASS="password"
+```
 <img src="images/kibana1.png">
 
 ## Contributing
