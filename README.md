@@ -38,7 +38,7 @@ This project allows users to create their own IoT search engine at home, in simp
 1. Clone this repository
 2. Install requirements with Python PIP
 3. Finally start scanner
-### Using docker image (Recommended)
+### Using Docker image (Recommended)
 ```
 docker pull alechilczenko/pwndora:3.0
 ```
@@ -80,7 +80,7 @@ python3 CLI.py -m ranges.csv -t 350 --custom-ports 80 21 22 -sv json --logs
 ```
 ### Usage with MongoDB
 To insert the results into a database, you must set the following environment variables:
-> Tip: You can create an instance of MongoDB and Mongo Express using docker-compose. 
+> Tip: You can create an instance of MongoDB and Mongo Express using [docker-compose](https://github.com/alechilczenko/pwndora/blob/main/docker/mongodb-mongo_express.yml). 
 ```
 export MONGODB_URI="mongodb://localhost:27017"
 export MONGODB_USER="user"
