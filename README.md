@@ -32,12 +32,12 @@ This project allows users to create their own IoT search engine at home, in simp
 
 ## Getting Started
 ### Manual Installation
-  > Make sure you have $HOME/.local/share directory, to avoiding issues with Webtech.
+> Make sure you have $HOME/.local/share directory, to avoiding issues with Webtech.
   
-  > To use slack argument, you should configure [Incoming Webhooks](https://api.slack.com/messaging/webhooks) URL in config.py
-- Clone this repository
-- Install requirements with Python PIP
-- Finally start scanner
+> To use slack argument, you should configure [Incoming Webhooks](https://api.slack.com/messaging/webhooks) URL in config.py
+1. Clone this repository
+2. Install requirements with Python PIP
+3. Finally start scanner
 ### Using docker image (Recommended)
 ```
 docker pull alechilczenko/pwndora:3.0
@@ -78,7 +78,7 @@ Scan with custom ports and logs options:
 ```bash
 python3 CLI.py -m ranges.csv -t 350 --custom-ports 80 21 22 -sv json --logs
 ```
-### Usage with MongDB
+### Usage with MongoDB
 To insert the results into a database, you must set the following environment variables:
 > Tip: You can create an instance of MongoDB and Mongo Express using docker-compose. 
 ```
@@ -86,6 +86,13 @@ export MONGODB_URI="mongodb://localhost:27017"
 export MONGODB_USER="user"
 export MONGODB_PASS="password"
 ```
+## The right way (Elasticsearch and Kibana)
+### How create your own IoT search engine?
+After storing results in our database, we can integrate Elasticsearch to perform fast searches. You can synchronize MongoDB and Elasticsearch using the tool: [Mongo-to-elastic-dump](https://github.com/sameer17cs/mongo-to-elastic-dump.git).
+
+Finally we added Kibana to visualize data and create graphs with statistics.
+
+### Graphs Example
 <img src="images/kibana1.png">
 
 ## Contributing
