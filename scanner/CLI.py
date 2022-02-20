@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+import collections
 from loguru import logger
 from modules.logo import title
 from modules.Commands import get_flags
 from configs.Ports import TOP_PORTS, COMMON_PORTS
 from core.MainScanner import Scanner
-from modules.mongo import collection
+from modules.mongo import insert_data
 from modules.slack import send_message
 from modules.save  import save_json
 
@@ -39,14 +40,12 @@ def launch_scanner(start,end,threads,timeout,top_ports,all_ports,slack,custom,sa
     devices = Discover.get_devices()
     if devices:
         if save == "mongodb":
-            logger.info("Inserting results in database...")
-            collection.insert_many(devices)
+            insert_data(devices)
         elif save == "json":
             logger.info("Saving results at {}".format(save_json(devices)))
 
 def main():
     print(title)
-
     start, end, threads, path, timeout, top_ports, all_ports, custom, slack, save, logs = get_flags()
 
     if logs:
