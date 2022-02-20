@@ -13,31 +13,28 @@
 </p>
 
 ## Introduction
-Pwndora is a massive and fast IPv4 address range scanner, integrated with multi-threading.
+Pwndora is a massive and fast IPv4 address range scanner, integrated with multi-threading. Using sockets, it analyzes which ports are open, and collects more information about targets.
 
-Using sockets, it analyzes which ports are open, and collects more information about targets, each result is stored in Elasticsearch. You can integrate with Kibana to be able to visualize and manipulate data, basically it's like having your own IoT search engine at home.
+This project allows users to create their own IoT search engine at home, in simple steps, for educational purposes. 
 
 ## Features
 
 - Port scanning with different options and retrieve software banner information.
-- Detect some web technologies running on servers, using [Webtech](https://github.com/ShielderSec/webtech) integration.   
-- Retrieves IP geolocation from Maxmind free database, updated periodically. 
+- Detect some web technologies and operating systems running on servers, using [Webtech](https://github.com/ShielderSec/webtech) integration.   
+- Retrieves IP geolocation from Maxmind free database file, updated periodically. 
 - Anonymous login detection on FTP servers.
 - Send notifications with results using Slack API.
+- Different ways to store data: MongoDB and JSON file.
+- Multi thread mode, with a limit of 400 threads
 
 ## Visual
-<a href="https://asciinema.org/a/469947" target="_blank"><img src="https://asciinema.org/a/469947.svg" width=700px /></a>
-
+<a href="https://asciinema.org/a/470234" target="_blank"><img src="https://asciinema.org/a/470234.svg" width=700px/></a>
 ## Getting Started
   > Make sure you have $HOME/.local/share directory, to avoiding issues with Webtech.
   
   > To use slack argument, you should configure [Incoming Webhooks](https://api.slack.com/messaging/webhooks) URL in config.py
 - Clone this repository
 - Install requirements with Python PIP
-- Set password for Elasticsearch and Kibana containers in [docker-compose.yml](https://github.com/alechilczenko/pwndora/blob/main/scanner/Connect.py)
-- Configure connection to Elasticsearch in [connect.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/Connect.py)
-- Set paths of Maxmind ASN, city databases and Rendertron URL in [config.py](https://github.com/alechilczenko/pwndora/blob/main/scanner/config.py)
-- Launch containers in background with Docker Compose.
 - Finally start scanner
 
 ## Usage
@@ -53,14 +50,16 @@ options:
                         File path with IPv4 ranges
   -ti TIMEOUT, --timeout TIMEOUT
                         Socket timeout [Default: 0.5]
-  -p, --top-ports       Scan only 20 most used ports [Default]
+  -p, --top-ports       Scan only 20 most used ports
   -a, --all-ports       Scan 1000 most used ports
   -c CUSTOM [CUSTOM ...], --custom-ports CUSTOM [CUSTOM ...]
                         Scan custom ports directly from terminal
   -sl, --slack          Send notifications by Slack with results
+  -sv {json,mongodb}, --save {json,mongodb}
+                        Methods of data storage
+  -l, --logs            Add a log file, useful in debugging
 ```
 ## Examples
-> If this is your first time running, you should use the --update argument.
 
 Scan only a single IPv4 address range:
 ```shell
@@ -70,8 +69,6 @@ Scan from a text file with multiple IPv4 address ranges:
 ```shell
 python3 CLI.py -m Argentina.csv -t 200 -ti 5 --all-ports
 ```
-
-> If you use an excessive amount of threads, some ISPs may detect suspicious traffic and disconnect you from the network.
 ## Kibana Example
 <img src="images/kibana1.png">
 
