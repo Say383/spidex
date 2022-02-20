@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import collections
 from loguru import logger
 from modules.logo import title
 from modules.Commands import get_flags
