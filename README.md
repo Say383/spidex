@@ -40,7 +40,7 @@ This project allows users to create their own IoT search engine at home, in simp
 3. Finally start scanner
 ### Using Docker image (Recommended)
 ```
-docker pull alechilczenko/pwndora:3.0
+docker pull alechilczenko/pwndora:3.1
 ```
 ## Usage
 ### Options
