@@ -25,6 +25,14 @@ class Scanner():
         while True:
             try:
                 ip = self.q.get(timeout=3)
+
+                with self.lock:
+
+                    self.count += 1
+                    percent = (self.count * 100) / len(self.targets)
+                    output = "{}% {}/{}".format(percent, self.count,len(self.targets))
+                    print(output, end="\r")
+
             except queue.Empty:
                 return
             Scanner = Port_Scanner(ip)
@@ -33,16 +41,8 @@ class Scanner():
             if Scanner.contain_results():
                 banners, hostname, ports, tags = Scanner.get_results()
                 device = create_document(ip,banners,hostname,ports,tags)
-
                 self.results.put_nowait(device)
-
-            with self.lock:
-
-                self.count += 1
-                percent = (self.count*100)/len(self.targets)
-                output = "{}% {}/{}".format(percent,self.count,len(self.targets))
-                print(output, end="\r")
-
+                
             self.q.task_done()
 
     def set_ports(self,ports):
@@ -66,7 +66,6 @@ class Scanner():
                 thread.start()
 
             self.q.join()
-
             logger.info(f"Total discovered devices: {self.results.qsize()}")
 
         except KeyboardInterrupt:
