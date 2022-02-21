@@ -21,10 +21,10 @@ class Scanner():
     def set_ports(self,ports):
         self.ports = ports
 
-    def job(self,q,timeout):
+    def job(self,timeout):
         while True:
             try:
-                ip = q.get(timeout=3)
+                ip = self.q.get(timeout=3)
             except queue.Empty:
                 return
             Scanner = Port_Scanner(ip)
@@ -62,7 +62,7 @@ class Scanner():
             logger.info(f"Waiting for Queue to complete, {self.q.qsize()} jobs")
 
             for _ in range(threads_number):
-                thread = threading.Thread(target=self.job,args=(self.q, timeout),daemon=True)
+                thread = threading.Thread(target=self.job,args=(timeout,),daemon=True)
                 thread.start()
 
             self.q.join()
