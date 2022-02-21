@@ -1,6 +1,6 @@
 #Local modules
 from loguru import logger
-from queue import Queue
+import queue
 
 import sys
 import threading
@@ -13,61 +13,59 @@ from modules.ranges import get_ranges
 class Scanner():
     def __init__(self,start,end):
         self.targets = get_ranges(start,end)
-        self.results = Queue()
+        self.results = queue.Queue()
         self.count = 0
+        self.q = queue.Queue()
         self.lock = threading.Lock()
 
     def set_ports(self,ports):
         self.ports = ports
 
     def job(self,q,timeout):
-        try:
-            pool_sema.acquire()
+        while True:
+            try:
+                ip = q.get(timeout=3)
+            except queue.Empty:
+                return
+            Scanner = Port_Scanner(ip)
+            Scanner.start(timeout,self.ports)
 
-            while not q.empty():
-                ip = q.get()
-                Scanner = Port_Scanner(ip)
-                Scanner.start(timeout,self.ports)
+            if Scanner.contain_results():
+                banners, hostname, ports, tags = Scanner.get_results()
+                device = create_document(ip,banners,hostname,ports,tags)
 
-                if Scanner.contain_results():
-                    banners, hostname, ports, tags = Scanner.get_results()
-                    device = create_document(ip,banners,hostname,ports,tags)
-                    
-                    self.results.put(device)
+                self.results.put_nowait(device)
 
-                q.task_done()
+            with self.lock:
 
-                with self.lock:
-                    
-                    self.count += 1
-                    percent = (self.count*100)/len(self.targets)
-                    output = "{}% {}/{}".format(percent,self.count,len(self.targets))
-                    print(output, end="\r")
-        finally:
-            pool_sema.release()
+                self.count += 1
+                percent = (self.count*100)/len(self.targets)
+                output = "{}% {}/{}".format(percent,self.count,len(self.targets))
+                print(output, end="\r")
+
+            self.q.task_done()
+
+    def set_ports(self,ports):
+        self.ports = ports
 
     @execution_time
-    def start_threads(self,threads,timeout):
+    def start_threads(self,threads_number,timeout):
         #Implemeting Queue, safe threading
 
-        q = Queue()
-        global pool_sema
-
         logger.info("Searching connected devices, please wait")
-        #Semaphore object limit max number of threads in paralell
-        pool_sema = threading.Semaphore(value=400)
         #Count total of results with Queue
         try:
             logger.info("Launching threads")
             for j in self.targets:
-                q.put(j)
-            logger.info(f"Waiting for Queue to complete, {q.qsize()} jobs")
+                self.q.put_nowait(j)
 
-            for i in range(threads):
-                thread = threading.Thread(target=self.job, args=(q,timeout),daemon=True)
+            logger.info(f"Waiting for Queue to complete, {self.q.qsize()} jobs")
+
+            for _ in range(threads_number):
+                thread = threading.Thread(target=self.job,args=(self.q, timeout),daemon=True)
                 thread.start()
 
-            q.join()
+            self.q.join()
 
             logger.info(f"Total discovered devices: {self.results.qsize()}")
 
@@ -80,5 +78,3 @@ class Scanner():
 
     def get_devices(self):
         return list(self.results.queue)
-    
-    
