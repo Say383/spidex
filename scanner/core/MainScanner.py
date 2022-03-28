@@ -45,9 +45,6 @@ class Scanner():
                 
             self.q.task_done()
 
-    def set_ports(self,ports):
-        self.ports = ports
-
     @execution_time
     def start_threads(self,threads_number,timeout):
         #Implemeting Queue, safe threading
