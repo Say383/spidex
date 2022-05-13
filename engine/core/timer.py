@@ -1,6 +1,7 @@
 from datetime import datetime
 from loguru import logger
 
+#Decorator that return execution time of some functions
 def execution_time(function):
 
     def get_time(*args, **kwargs):

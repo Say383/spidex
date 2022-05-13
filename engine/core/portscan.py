@@ -1,8 +1,13 @@
 import socket
 from loguru import logger
-from modules.tags import get_web_technologies
+from core.tags import get_web_technologies
 
-class Port_Scanner():
+'''
+The portscan class receives an ip address and the ports to be validated using sockets.
+If the connection is successful, it tries to get the hostname, the banners and calls a function to detect web technologies. 
+'''
+
+class Portscan():
     def __init__(self, ip):
         self.ip = ip
         self.hostname = []

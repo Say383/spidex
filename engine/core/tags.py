@@ -29,3 +29,4 @@ def get_web_technologies(ip,banner,port):
             return list(set(flat_list))
     else:
         return None
+

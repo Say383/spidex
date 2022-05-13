@@ -1,27 +1,26 @@
 import argparse
+import config
 import pathlib
 
+#A basic function to return all arguments in the main program
 def get_flags():
+
+    settings = config.Config()
+
     parser = argparse.ArgumentParser(
         description="Automatic scanner for Internet-connected devices")
-    parser.add_argument("-s",
-                        "--start",
+    parser.add_argument("-r",
+                        "--range",
                         type=str,
                         help="Start IPv4 address",
-                        dest="start")
-
-    parser.add_argument("-e",
-                        "--end",
-                        type=str,
-                        help="End IPv4 address",
-                        dest="end")
+                        dest="range")
 
     parser.add_argument("-t",
                         "--threads",
                         type=int,
                         dest="threads",
                         help="Number of threads [Default: 50]",
-                        default=50)
+                        default=settings.max_threads)
 
     parser.add_argument("-m",
                         "--massive-scan",
@@ -34,7 +33,7 @@ def get_flags():
                         type=int,
                         help="Socket timeout [Default: 0.5]",
                         dest="timeout",
-                        default=0.5)
+                        default=settings.request_timeout)
 
     parser.add_argument("-p",
                         "--top-ports",
@@ -55,18 +54,6 @@ def get_flags():
                         help='Scan custom ports directly from terminal',
                         dest="custom")
 
-    parser.add_argument("-sl",
-                        "--slack",
-                        action="store_true",
-                        help="Send notifications by Slack with results",
-                        dest="slack")
-
-    parser.add_argument("-sv",
-                        "--save",
-                        choices=['json','mongodb'],
-                        help="Methods of data storage",
-                        dest="save")
-
     parser.add_argument("-l",
                         "--logs",
                         action="store_true",
@@ -74,4 +61,4 @@ def get_flags():
                         dest="logs")
 
     flags = parser.parse_args()
-    return flags.start, flags.end, flags.threads,flags.file, flags.timeout, flags.top, flags.all, flags.custom, flags.slack, flags.save, flags.logs
+    return flags.range, flags.threads,flags.file, flags.timeout, flags.top, flags.all, flags.custom, flags.logs
