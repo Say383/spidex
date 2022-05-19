@@ -1,18 +1,16 @@
 import argparse
-import config
 import pathlib
+from config import Config
 
 #A basic function to return all arguments in the main program
 def get_flags():
-
-    settings = config.Config()
 
     parser = argparse.ArgumentParser(
         description="Automatic scanner for Internet-connected devices")
     parser.add_argument("-r",
                         "--range",
                         type=str,
-                        help="Start IPv4 address",
+                        help="IPv4 address ranges",
                         dest="range")
 
     parser.add_argument("-t",
@@ -20,7 +18,7 @@ def get_flags():
                         type=int,
                         dest="threads",
                         help="Number of threads [Default: 50]",
-                        default=settings.max_threads)
+                        default=Config.MAX_THREADS)
 
     parser.add_argument("-m",
                         "--massive-scan",
@@ -33,7 +31,7 @@ def get_flags():
                         type=int,
                         help="Socket timeout [Default: 0.5]",
                         dest="timeout",
-                        default=settings.request_timeout)
+                        default=Config.REQUEST_TIMEOUT)
 
     parser.add_argument("-p",
                         "--top-ports",

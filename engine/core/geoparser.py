@@ -1,6 +1,5 @@
 from datetime import datetime
-from loguru import logger
-import config
+from config import Config
 
 import geoip2.errors
 import geoip2.database
@@ -11,13 +10,11 @@ from colorama import Fore
 Receives an ip address validated by the portscan object and returns a JSON with the geolocation.
 '''
 
-@logger.catch
 def search_geolocation(ip):
-    Settings = config.Config()
     try:
-        with geoip2.database.Reader(Settings.city_database) as geo_reader:
+        with geoip2.database.Reader(Config.CITY_DB) as geo_reader:
             response = geo_reader.city(ip)
-        with geoip2.database.Reader(Settings.asn_database) as asn_reader:
+        with geoip2.database.Reader(Config.ASN_DB) as asn_reader:
             resp = asn_reader.asn(ip)
             return resp.autonomous_system_organization, resp.autonomous_system_number, response.country.name, response.city.name, response.country.iso_code, response.location.latitude, response.location.longitude
 
@@ -45,10 +42,9 @@ def create_json(ip,banners,hostname,ports,tags):
     doc = {k:v for k,v in col.items() if v is not None}
     #Formatting output, removig None values
     if tags != None:
-        output = f"{ip} {Fore.LIGHTMAGENTA_EX}{ports} {Fore.BLUE}{tags} {Fore.CYAN}{country} {Fore.WHITE}{city}"
+        output = F"{Fore.WHITE}{ip} {ports} {tags}"
     else:
-        output = f"{ip} {Fore.LIGHTMAGENTA_EX}{ports} {Fore.CYAN}{country} {Fore.WHITE}{city}"
+        output = F"{Fore.WHITE}{ip} {ports}"
 
-    logger.success(output)
-    return doc
+    return doc, output
  
