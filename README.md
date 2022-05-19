@@ -1,105 +1,127 @@
-<p align="center">
-<img src="static/final1.png" width=190px>
-</p>
-<p align="center">
+<img src="static/logo.png" width=180px>
 
-<img src="https://github.com/aleen42/badges/blob/master/src/elasticsearch.svg">
-<img src="https://github.com/aleen42/badges/blob/master/src/kibana.svg">
 <img src="https://github.com/aleen42/badges/blob/master/src/python.svg">
 <img src="https://github.com/aleen42/badges/blob/master/src/docker.svg">
-<img src="https://img.shields.io/badge/Version-3.0-brightgreen">
+<img src="https://img.shields.io/badge/Version-4.0-brightgreen">
 <img src="https://img.shields.io/badge/Maintained%3F-yes-blue.svg">
 
-</p>
+---------
+
+Current release: v4.0.0 developed by @alechilczenko
+
+> Note: Docker images will be released in the coming weeks.
+
+## Table of contents
+* [Guide](#Guide)
+  * [English]()
+  * [Spanish]()
+* [Introduction](#Introduction)
+* [Engine](#Engine)
+  * [Threads](#Threads)
+  * [Options](#Options)
+  * [Examples](#Examples)
+  * [Visual](#Visual)
+* [API](#Api)
+  * [Routes](#Routes)
+* [Deployment](#Deployment)
+  * [Basic](#Basic)
+  * [Advanced](#Advanced)
+* [Contributing](#Contributing)
+* [Legal Disclaimer](#Legal-disclaimer)
+* [Contact](#Contact)
+* [License](#License)
 
 ## Introduction
-Pwndora is a massive and fast IPv4 address range scanner, integrated with multi-threading. Using sockets, it analyzes which ports are open, and collects more information about targets.
+Spidex is a continuous reconnaissance scanner, which gives priority to proving network exposure.
+It performs large-scale port-oriented scanning and collects information from every device connected to the Internet.
 
-This project allows users to create their own IoT search engine at home, in simple steps, for educational purposes. 
+## Engine
+The engine is responsible for massively analyzing IP addresses received as arguments. It collects public information about each target, such as: open ports, geographic location, web technologies and banners.
 
-## Features
+Also stores a report for every scan cycle, containing:
+Execution time, devices found and start/end date.
 
-- Port scanning with different options and retrieve software banner information.
-- Detect some web technologies and operating systems running on servers, using [Webtech](https://github.com/ShielderSec/webtech) integration.   
-- Retrieves IP geolocation from Maxmind free database file, updated periodically. 
-- Anonymous login detection on FTP servers.
-- Send notifications with results using Slack API.
-- Different ways to store data: MongoDB and JSON file.
-- Multi thread mode, with a limit of 400 threads
+### Threads
+The implementation of threads and queues increases performance during scanning. In this way, requests are sent in parallel and the execution time for each cycle is significantly reduced.
+It currently has a limit of 450/500 threads.
 
-## Visual
-<a href="https://asciinema.org/a/470234" target="_blank"><img src="https://asciinema.org/a/470234.svg" width=700px/></a>
-
-## Getting Started
-### Manual Installation
-> Make sure you have $HOME/.local/share directory, to avoiding issues with Webtech.
-  
-> To use slack argument, you should configure [Incoming Webhooks](https://api.slack.com/messaging/webhooks) URL in config.py
-1. Clone this repository
-2. Install requirements with Python PIP
-3. Finally start scanner
-### Using Docker image (Recommended)
-```
-docker pull alechilczenko/pwndora:3.1
-```
-## Usage
 ### Options
 ```
 options:
   -h, --help            show this help message and exit
-  -s START, --start START
+  -r RANGE, --range RANGE
                         Start IPv4 address
-  -e END, --end END     End IPv4 address
   -t THREADS, --threads THREADS
                         Number of threads [Default: 50]
-  -m FILE, --massive-scan FILE
-                        File path with IPv4 ranges
+  -f, FILE, --file      File path with IPv4 ranges
   -ti TIMEOUT, --timeout TIMEOUT
                         Socket timeout [Default: 0.5]
   -p, --top-ports       Scan only 20 most used ports
   -a, --all-ports       Scan 1000 most used ports
   -c CUSTOM [CUSTOM ...], --custom-ports CUSTOM [CUSTOM ...]
                         Scan custom ports directly from terminal
-  -sl, --slack          Send notifications by Slack with results
-  -sv {json,mongodb}, --save {json,mongodb}
-                        Methods of data storage
   -l, --logs            Add a log file, useful in debugging
 ```
 ### Examples
-Scan only a single IPv4 address range:
+Scan only a single IPv4 address range with most used ports by default:
  ```bash
-python3 CLI.py -s 192.168.0.0 -e 192.168.0.255 -t 150 --top-ports -sv json
+python3 engine.py -r 192.168.0.0,192.168.0.255 -t 150 --top-ports
  ```
-Scan from a text file with multiple IPv4 address ranges:
+Scan from a text file with multiple IPv4 address ranges and socket timeout of seconds:
 ```bash
-python3 CLI.py -m ranges.csv -t 200 -ti 5 --all-ports --save mongodb
+python3 engine.py -m ranges.csv -t 200 -ti 5 --all-ports
 ```
-Scan with custom ports and logs options:
+Scan with CIDR, custom ports and logs option:
 ```bash
-python3 CLI.py -m ranges.csv -t 350 --custom-ports 80 21 22 -sv json --logs
+python3 engine.py -r 192.168.0.0/255 -t 350 -C 80 21 22 --logs
 ```
-### Usage with MongoDB
-To insert the results into a database, you must set the following environment variables:
-> Tip: You can create an instance of MongoDB and Mongo Express using [docker-compose](https://github.com/alechilczenko/pwndora/blob/main/docker/mongodb-mongo_express.yml). 
-```
-export MONGODB_URI="mongodb://localhost:27017"
-export MONGODB_USER="user"
-export MONGODB_PASS="password"
-```
-## The right way (Elasticsearch and Kibana)
-### How create your own IoT search engine?
-After storing results in our database, we can integrate Elasticsearch to perform fast searches. You can synchronize MongoDB and Elasticsearch using the tool: [Mongo-to-elastic-dump](https://github.com/sameer17cs/mongo-to-elastic-dump.git).
 
-Finally we added Kibana to visualize data and create graphs with statistics.
+### Visual
+<a href="https://asciinema.org/a/goJmDQ9ucUAOmxTeRPUZr4Qxl" target="_blank"><img src="https://asciinema.org/a/goJmDQ9ucUAOmxTeRPUZr4Qxl.svg" width=700px></a>
 
-### Graphs Example
-<img src="images/kibana1.png">
+## API
+It consists of a Flask application, which allows to store and perform any operation on the results sent by the search engine. It uses MongoDB as a database, it is ideal because the data is not structured.
+
+### Routes
+| Method  | Route                  | Description                       |
+|---------|------------------------|-----------------------------------|
+| POST    | api/submit/device      | Submit single result              |
+| GET     | api/devices            | Get all results                   |
+| GET     | api/device/ip          | Get single result by IP address   |
+| DELETE  | api/delete/device/ip   | Delete one                        |
+| POST    | api/submit/report      | Submit report scan                |
+| GET     | api/reports            | Get all reports
+
+## Deployment
+The deployment of both components is performed with Docker, for easier installation and to avoid contaminating the environment with dependencies.
+You can download the images from DockerHub. 
+### Basic
+For a basic deployment, set the environment variables for each image, in the [Docker Compose files]()
+#### MongoDB
+```python
+MONGO_INITDB_ROOT_USERNAME: USERNAME
+MONGO_INITDB_ROOT_PASSWORD: PASSWORD
+```
+#### API
+```
+DB_SERVER_NAME: MONGODB_SERVER 
+DB_USERNAME: MONGODB_USER
+DB_PASSWORD: MONGODB_PASSWORD
+```
+#### Engine
+```
+SERVER_ADDRESS: API_SERVER
+```
+
+### Advanced
+The integration of Elasticsearch and Kibana allows to have a graphical interface to visualize and manipulate data in an efficient way.
+Currently the project does not have a way to insert data automatically.
+But you can use tools such as: Mongo-to-elastic-dump, and generate some interesting graphs in your local machine after complete scan cycle.
 
 ## Contributing
 If you have ideas or future features, feel free to participate to continue making this project great. 
-
 ## Legal Disclaimer
-This project is made for educational and ethical testing purposes only. Usage of this software for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program. 
+This project is made for educational and ethical testing purposes only. Usage of this software for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program.
 
 ## Contact
 alechilczenko@gmail.com
