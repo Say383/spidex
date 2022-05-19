@@ -1,35 +1,35 @@
-<img src="static/logo.png" width=180px>
+<img src="static/logo.png" width=280px>
 
-<img src="https://github.com/aleen42/badges/blob/master/src/python.svg">
-<img src="https://github.com/aleen42/badges/blob/master/src/docker.svg">
-<img src="https://img.shields.io/badge/Version-4.0-brightgreen">
-<img src="https://img.shields.io/badge/Maintained%3F-yes-blue.svg">
+![Build](https://img.shields.io/badge/Built%20with-Python-Blue)
+![docker](https://github.com/aleen42/badges/blob/master/src/docker.svg)
+![version](https://img.shields.io/badge/Version-4.0-brightgreen)
+![maintained](https://img.shields.io/badge/Maintained%3F-yes-blue.svg)
 
----------
+---
 
-Versión actual: v4.0.0 desarrollada por [@alechilczenko]()
+#### Versión actual: v4.0.0 desarrollada por [@alechilczenko](https://github.com/alechilczenko)
 
 > Nota: Las imágenes de Docker se publicarán en las próximas semanas.
 
 ## Tabla de contenidos
-* [Guía](#Guia)
-  * [Inglés]()
-  * [Español]()
-* [Introducción](#Introduction)
-* [Motor de búsqueda](#Engine)
-  * [Hilos](#Threads)
-  * [Opciones](#Options)
-  * [Ejemplos](#Examples)
-  * [Visualización](#Visual)
-* [API](#Api)
-  * [Rutas](#Routes)
-* [Despliegue](#Deployment)
-  * [Básico](#Basic)
-  * [Avanzado](#Advanced)
-* [Aportes](#Contributing)
-* [Aviso Legal](#Legal-disclaimer)
-* [Contacto](#Contact)
-* [Licencia](#License)
+* [Guía](https://github.com/alechilczenko/spidex)
+  * [Inglés](https://github.com/alechilczenko/spidex)
+  * [Español](https://github.com/alechilczenko/spidex/blob/main/README_ES.md)
+* [Introducción](#introducción)
+* [Motor de búsqueda](#motor-de-búsqueda)
+  * [Hilos](#hilos)
+  * [Opciones](#opciones)
+  * [Ejemplos](#ejemplos)
+  * [Visualización](#visualización)
+* [API](#api)
+  * [Rutas](#rutas)
+* [Despliegue](#despliegue)
+  * [Básico](#básico)
+  * [Avanzado](#avanzado)
+* [Aportes](#aportes)
+* [Aviso Legal](#aviso-legal)
+* [Contacto](#contacto)
+* [Licencia](#licencia)
 
 ## Introducción
 Spidex es un escáner de reconocimiento continuo, que da prioridad a demostrar la exposición de la red.
@@ -98,7 +98,7 @@ Puedes descargar las imágenes desde DockerHub.
 Para un despliegue básico, establezca las variables de entorno para cada imagen, en los [archivos de Docker Compose]() e inicie los contenedores en el siguiente orden:
 
 #### MongoDB
-```python
+```
 MONGO_INITDB_ROOT_USERNAME: USERNAME
 MONGO_INITDB_ROOT_PASSWORD: PASSWORD
 ```
