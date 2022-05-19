@@ -2,6 +2,7 @@ from ipaddress import ip_address
 from loguru import logger
 import ipaddress
 import queue
+import random
 
 '''
 Some functions to validate ip address ranges received as arguments.
@@ -36,13 +37,16 @@ def put_targets_in_queue(targets):
 def single_range(iprange):
 
     total = detect_range_type(iprange)
-    return put_targets_in_queue(total)
+    return randomize_list(total)
 
 def multiple_ranges(file):
 
     total = get_total_ip_ranges(file)
-    result = put_targets_in_queue(total)
-    return result
+    return randomize_list(total)
+
+def randomize_list(total):
+    shuffled = sorted(total, key=lambda L: random.random())
+    return put_targets_in_queue(shuffled)
 
 def detect_range_type(iprange):
     if "," in iprange:
