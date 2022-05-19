@@ -2,38 +2,17 @@
 from loguru import logger
 from core.ranges import single_range, multiple_ranges
 from core.parser import get_flags
-from core.threadscan import Threadscan
-from core.logo import title
-import config
+from loguru import logger
+from core.run import launch_scanner
 import sys
 
-def launch_scanner(targets,threads,timeout,top_ports,all_ports,custom):
-    Discover = Threadscan(targets)
-    Settings = config.Config()
-
-    if top_ports:
-        Discover.set_ports(Settings.top_ports)
-    elif all_ports:
-        Discover.set_ports(Settings.ports)
-    elif custom:
-        Discover.set_ports(custom)
-    else:
-        logger.info("Please set port scan mode")
-        exit()
-
-    Discover.start_threads(threads,timeout)
-    
-    devices = Discover.get_devices()
-
 def main():
-
-    print(title)
     
     iprange,threads,path,timeout,top_ports,all_ports,custom,logs = get_flags()
 
     logger.remove(0)
 
-    logger.add(sys.stderr,colorize=True,format="<blue>{time:HH:mm:ss}</blue> | <level>{level: <8}</level> | <level>{message}</level>", enqueue=True)
+    logger.add(sys.stderr,colorize=True,format="<blue>{time:HH:mm:ss} <level>{level: <8}</level> <level>{message}</level></blue>", enqueue=True)
 
     if logs:
         logger.add("logs/{time}.log", enqueue=True)
