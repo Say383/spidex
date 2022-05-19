@@ -5,8 +5,9 @@ import queue
 import threading
 
 from core.portscan import Portscan
-from core.timer import execution_time
 from core.geoparser import create_json
+from core.api import submit_data
+from config import Config
 
 '''
 Threadscan class receives the queue with the ip addresses and starts threads.
@@ -39,21 +40,20 @@ class Threadscan():
 
             if Scanner.contain_results():
                 banners, hostname, ports, tags = Scanner.get_results()
-                device = create_json(ip,banners,hostname,ports,tags)
-                #MODULO API
+                device, output = create_json(ip,banners,hostname,ports,tags)
+
+                submit_data(device,Config.SERVER_NAME,Config.API_DEVICE_ENDPOINT)
+
                 self.results.put_nowait(device)
+                
+                logger.success(output)
                 
             self.q.task_done()
 
-    @execution_time
     def start_threads(self,max_threads,timeout):
         #Implemeting Queue, safe threading
-
-        logger.info("Searching connected devices, please wait")
         #Count total of results with Queue
         try:
-            logger.info("Launching threads")
-
             logger.info(f"Waiting for Queue to complete, {self.q.qsize()} jobs")
 
             for _ in range(max_threads):
@@ -75,7 +75,11 @@ class Threadscan():
             output = "{}% {}/{}".format(percent,self.count, self.total)
             print(output, end="\r")
 
-    def get_devices(self):
+    def get_total_found(self):
         return self.results.qsize()
+    
+    def get_total(self):
+        return self.total
+
 
 
