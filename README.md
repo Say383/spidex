@@ -1,35 +1,33 @@
-<img src="static/logo.png" width=180px>
+<img src="static/logo.png" width=280px>
 
-<img src="https://github.com/aleen42/badges/blob/master/src/python.svg">
-<img src="https://github.com/aleen42/badges/blob/master/src/docker.svg">
-<img src="https://img.shields.io/badge/Version-4.0-brightgreen">
-<img src="https://img.shields.io/badge/Maintained%3F-yes-blue.svg">
-
----------
-
-Current release: v4.0.0 developed by @alechilczenko
+![Build](https://img.shields.io/badge/Built%20with-Python-Blue)
+![docker](https://github.com/aleen42/badges/blob/master/src/docker.svg)
+![version](https://img.shields.io/badge/Version-4.0-brightgreen)
+![maintained](https://img.shields.io/badge/Maintained%3F-yes-blue.svg)
+---
+#### Current release: v4.0.0 developed by [@alechilczenko](https://github.com/alechilczenko)
 
 > Note: Docker images will be released in the coming weeks.
 
 ## Table of contents
-* [Guide](#Guide)
-  * [English]()
-  * [Spanish]()
-* [Introduction](#Introduction)
-* [Engine](#Engine)
-  * [Threads](#Threads)
-  * [Options](#Options)
-  * [Examples](#Examples)
-  * [Visual](#Visual)
-* [API](#Api)
-  * [Routes](#Routes)
-* [Deployment](#Deployment)
-  * [Basic](#Basic)
-  * [Advanced](#Advanced)
-* [Contributing](#Contributing)
-* [Legal Disclaimer](#Legal-disclaimer)
-* [Contact](#Contact)
-* [License](#License)
+* [Guide](https://github.com/alechilczenko/spidex)
+  * [English](https://github.com/alechilczenko/spidex)
+  * [Spanish](https://github.com/alechilczenko/spidex/blob/main/README_ES.md)
+* [Introduction](#introduction)
+* [Engine](#engine)
+  * [Threads](#threads)
+  * [Options](#options)
+  * [Examples](#examples)
+  * [Visual](#visual)
+* [API](#api)
+  * [Routes](#routes)
+* [Deployment](#deployment)
+  * [Basic](#basic)
+  * [Advanced](#advanced)
+* [Contributing](#contributing)
+* [Legal Disclaimer](#legal-disclaimer)
+* [Contact](#contact)
+* [License](#license)
 
 ## Introduction
 Spidex is a continuous reconnaissance scanner, which gives priority to proving network exposure.
@@ -98,7 +96,7 @@ You can download the images from DockerHub.
 ### Basic
 For a basic deployment, set the environment variables for each image, in the [Docker Compose files]()
 #### MongoDB
-```python
+```
 MONGO_INITDB_ROOT_USERNAME: USERNAME
 MONGO_INITDB_ROOT_PASSWORD: PASSWORD
 ```
@@ -115,6 +113,7 @@ SERVER_ADDRESS: API_SERVER
 
 ### Advanced
 The integration of Elasticsearch and Kibana allows to have a graphical interface to visualize and manipulate data in an efficient way.
+
 Currently the project does not have a way to insert data automatically.
 But you can use tools such as: Mongo-to-elastic-dump, and generate some interesting graphs in your local machine after complete scan cycle.
 
