@@ -1,4 +1,4 @@
-FROM python:slim
+FROM python:3-slim-bullseye
 RUN useradd --create-home --shell /bin/bash scanner
 WORKDIR /home/scanner
 USER scanner
